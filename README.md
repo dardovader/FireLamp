@@ -14,7 +14,7 @@ Lámpara con efecto fuego. Proyecto anteriormente conocido como PDLSAC (proyecto
 * Pines hembra
 * cable
 * Placa de ajujeros para prototipar
-* 2 potenciometros
+* 3 potenciometros
 * 1 Pulsador
 * 1 jumper
 * Sensor de temperatura DHT22 (opcional)

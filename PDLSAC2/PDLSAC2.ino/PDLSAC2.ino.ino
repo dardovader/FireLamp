@@ -24,6 +24,7 @@ boolean TORRES_IGUALES  = true;
 
 #define PIN_CHISPORROTEO A0
 #define PIN_FRIO_AMBIENTE A1
+#define PIN_BRILLO_TOTAL  A2
 
 
 #define NUM_LEDS_16    16
@@ -37,7 +38,7 @@ boolean TORRES_IGUALES  = true;
 
 #define MEM_ADDRESS 0
 
-#define BRIGHTNESS  64
+byte brillo = 64;
 #define FRAMES_PER_SECOND 60
 
 #define DHT_REFRESH 300000 
@@ -80,7 +81,7 @@ void setup() {
   FastLED.addLeds<WS2812B, LED_TORRE_PIN_2, GRB>(ledsTorre_2, NUM_LEDS_TORRE).setCorrection(TypicalSMD5050);
   FastLED.addLeds<WS2812B, LED_TORRE_PIN_3, GRB>(ledsTorre_3, NUM_LEDS_TORRE).setCorrection(TypicalSMD5050);
   FastLED.addLeds<WS2812B, LED_TORRE_PIN_4, GRB>(ledsTorre_4, NUM_LEDS_TORRE).setCorrection(TypicalSMD5050);
-  FastLED.setBrightness( BRIGHTNESS );
+  FastLED.setBrightness( brillo );
   t = dht.readTemperature();
   paleta = HeatColors_p;
   botoncete.begin();
@@ -160,9 +161,10 @@ void loop() {
   if (USE_POT_FOR_PARAMS) {
     CENTELLEO = map(analogRead(PIN_CHISPORROTEO), 0, 1023, 0, 255);
     ENFRIAMIENTO = map(analogRead(PIN_FRIO_AMBIENTE), 0, 1023, 0, 255);
+    brillo = map(analogRead(PIN_BRILLO_TOTAL), 0, 1023, 0, 255);
   }
 
-  FastLED.show();
+  FastLED.show(brillo);
   FastLED.delay(1000 / FRAMES_PER_SECOND);
 
 }
