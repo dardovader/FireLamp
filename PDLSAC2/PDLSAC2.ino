@@ -63,7 +63,7 @@ byte CENTELLEO = 200;
 byte ENFRIAMIENTO = 55;
 byte modo = 0;
 
-#define  num_modos 4
+#define  num_modos 5
 
 bool gReverseDirection = false;
 
@@ -146,6 +146,10 @@ void loop() {
         pintarTorres();
       }
       break;
+     case 4: // Static color
+        apagarAros();
+        SolidColor();
+        break;
   }
   
   if (USE_TEMP_SENSOR)
