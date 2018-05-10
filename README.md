@@ -35,6 +35,8 @@ Lámpara con efecto fuego. Proyecto anteriormente conocido como PDLSAC (proyecto
 * Button (by Michael Adams)
 * EEPROM (incluida con el IDE de Arduino)
 
+## Piezas
+* Panel impreso en 3D
 
 ## Links 
 * PCB for fab (https://aisler.net/p/RATZRCQM)

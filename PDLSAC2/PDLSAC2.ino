@@ -4,7 +4,7 @@
 #include <EEPROM.h>
 
 #define USE_TEMP_SENSOR false
-#define USE_POT_FOR_PARAMS false
+#define USE_POT_FOR_PARAMS true
 boolean TORRES_IGUALES  = true;
 
 // Pines digitales
@@ -17,7 +17,7 @@ boolean TORRES_IGUALES  = true;
 #define LED_TORRE_PIN_3   10
 #define LED_TORRE_PIN_2   11
 #define LED_TORRE_PIN_1   12
-#define BUTTON_PIN        13
+#define BUTTON_PIN        2
 
 
 // Pines Analógicos
@@ -72,7 +72,8 @@ int t = 0;
 unsigned long previousMillisTemp = 0;
 
 
-void setup() {
+void setup()
+{
   delay(3000);
   FastLED.addLeds<WS2812B, LED_60_PIN, GRB>(leds60, NUM_LEDS_60).setCorrection(TypicalSMD5050);
   FastLED.addLeds<WS2812B, LED_24_PIN, GRB>(leds24, NUM_LEDS_24).setCorrection(TypicalSMD5050);
@@ -92,8 +93,9 @@ void setup() {
 }
 
 void loop() {
+  Serial.print("modo ");Serial.println(modo);
   random16_add_entropy(random());
-  if (botoncete.released())
+if (botoncete.released())
   {
     modo++;
     if (modo >= num_modos)
@@ -102,11 +104,12 @@ void loop() {
     }
     EEPROM.write(MEM_ADDRESS, modo);
   }
-  
+
   unsigned long currentMillisTemp = millis();
   static uint8_t tono = 0;
   switch (modo) {
     case 0:  // Fuego normal
+      Serial.println("dentro de modo 0");
       paleta = HeatColors_p;
       FireRing60();
       FireRing24();
@@ -115,6 +118,7 @@ void loop() {
       pintarTorres();
       break; 
     case 1:  // Fuego asimétrico
+      Serial.println("dentro de modo 1");
       paleta = HeatColors_p;
       FireRing60();
       FireRing24();
@@ -123,6 +127,7 @@ void loop() {
       pintarTorres();
       break;
     case 2:  // Fuego arcoiris
+      Serial.println("dentro de modo 2");
       tono++;
       colorOscuro  = CHSV(tono, 255, 192);
       colorClaro = CHSV(tono, 128, 255);
@@ -134,6 +139,7 @@ void loop() {
       pintarTorres();
       break;
     case 3:  // Fuego segun temperatura
+      Serial.println("dentro de modo 3");
       if (USE_TEMP_SENSOR) {
         tono = map(t, MIN_TEMP, MAX_TEMP, 160, 0);
         colorOscuro  = CHSV(tono, 255, 192);
@@ -145,6 +151,11 @@ void loop() {
         TORRES_IGUALES = true;
         pintarTorres();
       }
+      else 
+      {
+        modo++;
+      }
+ 
       break;
      case 4: // Static color
         apagarAros();
@@ -154,7 +165,8 @@ void loop() {
   
   if (USE_TEMP_SENSOR)
   {
-    if (currentMillisTemp - previousMillisTemp >= DHT_REFRESH) {
+    if (currentMillisTemp - previousMillisTemp >= DHT_REFRESH)
+    {
       previousMillisTemp = currentMillisTemp;
       t = dht.readTemperature();
     }
@@ -162,7 +174,8 @@ void loop() {
     
   }
 
-  if (USE_POT_FOR_PARAMS) {
+  if (USE_POT_FOR_PARAMS)
+  {
     CENTELLEO = map(analogRead(PIN_CHISPORROTEO), 0, 1023, 0, 255);
     ENFRIAMIENTO = map(analogRead(PIN_FRIO_AMBIENTE), 0, 1023, 0, 255);
     brillo = map(analogRead(PIN_BRILLO_TOTAL), 0, 1023, 0, 255);
