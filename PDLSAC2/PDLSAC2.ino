@@ -39,7 +39,7 @@ boolean TORRES_IGUALES  = true;
 #define MEM_ADDRESS 0
 
 byte brillo = 64;
-#define FRAMES_PER_SECOND 60
+#define FRAMES_PER_SECOND 100
 
 #define DHT_REFRESH 300000 
 
@@ -63,7 +63,7 @@ byte CENTELLEO = 200;
 byte ENFRIAMIENTO = 55;
 byte modo = 0;
 
-#define  num_modos 5
+#define  num_modos 7
 
 bool gReverseDirection = false;
 
@@ -74,7 +74,7 @@ unsigned long previousMillisTemp = 0;
 
 void setup()
 {
-  delay(3000);
+  delay(2000);
   FastLED.addLeds<WS2812B, LED_60_PIN, GRB>(leds60, NUM_LEDS_60).setCorrection(TypicalSMD5050);
   FastLED.addLeds<WS2812B, LED_24_PIN, GRB>(leds24, NUM_LEDS_24).setCorrection(TypicalSMD5050);
   FastLED.addLeds<WS2812B, LED_16_PIN, GRB>(leds16, NUM_LEDS_16).setCorrection(TypicalSMD5050);
@@ -90,10 +90,11 @@ void setup()
   Serial.begin(115200);
   Serial.println("It's showtime!");
   modo = EEPROM.read(MEM_ADDRESS);
+  
 }
 
 void loop() {
-  Serial.print("modo ");Serial.println(modo);
+  //Serial.print("modo ");Serial.println(modo);
   random16_add_entropy(random());
 if (botoncete.released())
   {
@@ -109,7 +110,7 @@ if (botoncete.released())
   static uint8_t tono = 0;
   switch (modo) {
     case 0:  // Fuego normal
-      Serial.println("dentro de modo 0");
+      //Serial.println("dentro de modo 0");
       paleta = HeatColors_p;
       FireRing60();
       FireRing24();
@@ -118,7 +119,7 @@ if (botoncete.released())
       pintarTorres();
       break; 
     case 1:  // Fuego asimétrico
-      Serial.println("dentro de modo 1");
+      //Serial.println("dentro de modo 1");
       paleta = HeatColors_p;
       FireRing60();
       FireRing24();
@@ -127,7 +128,7 @@ if (botoncete.released())
       pintarTorres();
       break;
     case 2:  // Fuego arcoiris
-      Serial.println("dentro de modo 2");
+      //Serial.println("dentro de modo 2");
       tono++;
       colorOscuro  = CHSV(tono, 255, 192);
       colorClaro = CHSV(tono, 128, 255);
@@ -139,7 +140,7 @@ if (botoncete.released())
       pintarTorres();
       break;
     case 3:  // Fuego segun temperatura
-      Serial.println("dentro de modo 3");
+      //Serial.println("dentro de modo 3");
       if (USE_TEMP_SENSOR) {
         tono = map(t, MIN_TEMP, MAX_TEMP, 160, 0);
         colorOscuro  = CHSV(tono, 255, 192);
@@ -158,9 +159,20 @@ if (botoncete.released())
  
       break;
      case 4: // Static color
+        TORRES_IGUALES = true;
         apagarAros();
         SolidColor();
         break;
+     case 5: //faro
+       tono = 127;
+       TORRES_IGUALES = true;
+       faro(tono);
+       break;
+     case 6: // faro arcoiris
+       tono = t++;
+       TORRES_IGUALES = true;
+       faro(tono);
+       break;
   }
   
   if (USE_TEMP_SENSOR)

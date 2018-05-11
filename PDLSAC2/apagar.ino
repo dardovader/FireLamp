@@ -25,3 +25,14 @@ void apagar16()
   leds16[i] = CRGB(0,0,0);
 }
 
+void apagarTorres()
+{
+   for (byte i=0; i<NUM_LEDS_TORRE; i++)
+   {
+    ledsTorre_1[i]=CRGB(0,0,0);
+    ledsTorre_2[i]=CRGB(0,0,0);
+    ledsTorre_3[i]=CRGB(0,0,0);
+    ledsTorre_4[i]=CRGB(0,0,0);
+   }
+}
+
