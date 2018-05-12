@@ -2,19 +2,19 @@ void FireRing60()
 {
   static byte heat[NUM_LEDS_60];
 
-  for ( int i = 0; i < NUM_LEDS_60; i++) {
+  for ( byte i = 0; i < NUM_LEDS_60; i++) {
     heat[i] = qsub8( heat[i],  random8(0, ((ENFRIAMIENTO * 10) / NUM_LEDS_60) + 2));
   }
 
   if ( random8() < CENTELLEO ) {
-    int y = random8(NUM_LEDS_60 - 1);
+    byte y = random8(NUM_LEDS_60 - 1);
     heat[y] = qadd8( heat[y], random8(160, 255) );
   }
 
-  for ( int j = 0; j < NUM_LEDS_60; j++) {
+  for ( byte j = 0; j < NUM_LEDS_60; j++) {
     byte colorindex = scale8( heat[j], 240);
     CRGB color = ColorFromPalette( paleta, colorindex);
-    int pixelnumber;
+    byte pixelnumber;
     if ( gReverseDirection ) {
       pixelnumber = (NUM_LEDS_60 - 1) - j;
     } else {
@@ -54,20 +54,20 @@ void FireRing16()
   static byte heat[NUM_LEDS_16];
 
 
-  for ( int i = 0; i < NUM_LEDS_16; i++) {
+  for ( byte i = 0; i < NUM_LEDS_16; i++) {
     heat[i] = qsub8( heat[i],  random8(0, ((ENFRIAMIENTO * 10) / NUM_LEDS_24) + 2));
   }
 
 
   if ( random8() < CENTELLEO ) {
-    int y = random8(NUM_LEDS_16 - 1);
+    byte y = random8(NUM_LEDS_16 - 1);
     heat[y] = qadd8( heat[y], random8(160, 255) );
   }
 
-  for ( int j = 0; j < NUM_LEDS_16; j++) {
+  for ( byte j = 0; j < NUM_LEDS_16; j++) {
     byte colorindex = scale8( heat[j], 240);
     CRGB color = ColorFromPalette( paleta, colorindex);
-    int pixelnumber;
+    byte pixelnumber;
     if ( gReverseDirection ) {
       pixelnumber = (NUM_LEDS_16 - 1) - j;
     } else {
@@ -81,23 +81,23 @@ void FireBar(byte nt)  // Mark Kriegsman's Fire2012 algorithm
 {
   static byte heat[NUM_LEDS_TORRE];
 
-  for ( int i = 0; i < NUM_LEDS_TORRE; i++) {
+  for ( byte i = 0; i < NUM_LEDS_TORRE; i++) {
     heat[i] = qsub8( heat[i],  random8(0, ((ENFRIAMIENTO * 10) / NUM_LEDS_TORRE) + 2));
   }
 
-  for ( int k = NUM_LEDS_TORRE - 1; k >= 2; k--) {
+  for ( byte k = NUM_LEDS_TORRE - 1; k >= 2; k--) {
     heat[k] = (heat[k - 1] + heat[k - 2] + heat[k - 2] ) / 3;
   }
 
   if ( random8() < CENTELLEO ) {
-    int y = random8(7);
+    byte y = random8(7);
     heat[y] = qadd8( heat[y], random8(160, 255) );
   }
 
-  for ( int j = 0; j < NUM_LEDS_TORRE; j++) {
+  for ( byte j = 0; j < NUM_LEDS_TORRE; j++) {
     byte colorindex = scale8( heat[j], 240);
     CRGB color = ColorFromPalette( paleta, colorindex);
-    int pixelnumber;
+    byte pixelnumber;
     if ( gReverseDirection ) {
       pixelnumber = (NUM_LEDS_TORRE - 1) - j;
     } else {
@@ -140,3 +140,27 @@ void pintarTorres()
     FireBar(4);
   }
 }
+
+void magia()
+{
+  for (byte i=0; i<NUM_LEDS_TORRE; i++)
+  {
+    ledsTorre_1[i]=qsub8(ledsTorre_1[i],random8(0,ENFRIAMIENTO));
+    ledsTorre_2[i]=qsub8(ledsTorre_2[i],random8(0,ENFRIAMIENTO));
+    ledsTorre_3[i]=qsub8(ledsTorre_3[i],random8(0,ENFRIAMIENTO));
+    ledsTorre_4[i]=qsub8(ledsTorre_4[i],random8(0,ENFRIAMIENTO));
+  }
+
+  if (random8() <CENTELLEO)
+  {
+    byte n= random8(0,3);
+    switch(n)
+    {
+      case 0: ledsTorre_1[random8(0,NUM_LEDS_TORRE-1)]=CHSV(random8(),255,255); break;
+      case 1: ledsTorre_2[random8(0,NUM_LEDS_TORRE-1)]=CHSV(random8(),255,255); break;
+      case 2: ledsTorre_3[random8(0,NUM_LEDS_TORRE-1)]=CHSV(random8(),255,255); break;
+      case 3: ledsTorre_4[random8(0,NUM_LEDS_TORRE-1)]=CHSV(random8(),255,255); break;
+    }
+  }
+}
+

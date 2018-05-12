@@ -3,8 +3,18 @@
 #include <Button.h>
 #include <EEPROM.h>
 
+#include "SoftwareSerial.h"
+#include "DFRobotDFPlayerMini.h"
+
+#define MP3_SOUND_HOGUERA 1
+#define MP3_SOUND_AGUA    2
+#define MP3_SOUND_MAR     3
+
+
+
 #define USE_TEMP_SENSOR false
 #define USE_POT_FOR_PARAMS true
+#define USAR_SONIDO false
 boolean TORRES_IGUALES  = true;
 
 // Pines digitales
@@ -18,6 +28,11 @@ boolean TORRES_IGUALES  = true;
 #define LED_TORRE_PIN_2   11
 #define LED_TORRE_PIN_1   12
 #define BUTTON_PIN        2
+#define SOFT_SERIALM_RX    6
+#define SOFT_SERIALM_TX    7
+
+SoftwareSerial miSerial(SOFT_SERIALM_RX, SOFT_SERIALM_TX); // RX, TX
+DFRobotDFPlayerMini mp3;
 
 
 // Pines Analógicos
@@ -63,7 +78,7 @@ byte CENTELLEO = 200;
 byte ENFRIAMIENTO = 55;
 byte modo = 0;
 
-#define  num_modos 7
+#define  num_modos 8
 
 bool gReverseDirection = false;
 
@@ -71,7 +86,7 @@ int t = 0;
 
 unsigned long previousMillisTemp = 0;
 
-
+byte melodia, nueva_melodia = 0;
 void setup()
 {
   delay(2000);
@@ -88,13 +103,24 @@ void setup()
   botoncete.begin();
   dht.begin();
   Serial.begin(115200);
-  Serial.println("It's showtime!");
+  Serial.println(F("It's showtime!"));
   modo = EEPROM.read(MEM_ADDRESS);
+  if (USAR_SONIDO)
+  {
+    Serial.print("Iniciado sistema de sonido");
+    if (!mp3.begin(miSerial))
+    {
+      Serial.println(F("Unable to begin:"));
+      Serial.println(F("1.Please recheck the connection!"));
+      Serial.println(F("2.Please insert the SD card!"));
+      while(true);
+    }
+  }
   
 }
 
 void loop() {
-  //Serial.print("modo ");Serial.println(modo);
+  //Serial.print(F("modo "));Serial.println(modo);
   random16_add_entropy(random());
 if (botoncete.released())
   {
@@ -103,7 +129,7 @@ if (botoncete.released())
     {
       modo=0;
     }
-    EEPROM.write(MEM_ADDRESS, modo);
+    EEPROM.update(MEM_ADDRESS, modo);
   }
 
   unsigned long currentMillisTemp = millis();
@@ -117,6 +143,10 @@ if (botoncete.released())
       FireRing16();
       TORRES_IGUALES = true;
       pintarTorres();
+      if (USAR_SONIDO)
+      {
+        tocarSonido(MP3_SOUND_HOGUERA);
+      }
       break; 
     case 1:  // Fuego asimétrico
       //Serial.println("dentro de modo 1");
@@ -126,18 +156,26 @@ if (botoncete.released())
       FireRing16();
       TORRES_IGUALES = false;
       pintarTorres();
+      if (USAR_SONIDO)
+      {
+        tocarSonido(MP3_SOUND_HOGUERA);
+      }
       break;
     case 2:  // Fuego arcoiris
       //Serial.println("dentro de modo 2");
       tono++;
       colorOscuro  = CHSV(tono, 255, 192);
-      colorClaro = CHSV(tono, 128, 255);
+      colorClaro = CHSV(tono, 128, 255);if (USAR_SONIDO)
       paleta = CRGBPalette16( CRGB::Black, colorOscuro, colorClaro, CRGB::White);
       FireRing60();
       FireRing24();
       FireRing16();
       TORRES_IGUALES = true;
       pintarTorres();
+      if (USAR_SONIDO)
+      {
+        tocarSonido(MP3_SOUND_HOGUERA);
+      }
       break;
     case 3:  // Fuego segun temperatura
       //Serial.println("dentro de modo 3");
@@ -151,6 +189,10 @@ if (botoncete.released())
         FireRing16();
         TORRES_IGUALES = true;
         pintarTorres();
+        if (USAR_SONIDO)
+        {
+          tocarSonido(MP3_SOUND_HOGUERA);
+        }
       }
       else 
       {
@@ -162,16 +204,32 @@ if (botoncete.released())
         TORRES_IGUALES = true;
         apagarAros();
         SolidColor();
+        if (USAR_SONIDO)
+        {
+          tocarSonido(MP3_SOUND_HOGUERA);
+        }
         break;
      case 5: //faro
        tono = 127;
        TORRES_IGUALES = true;
        faro(tono);
+       if (USAR_SONIDO)
+       {
+        tocarSonido(MP3_SOUND_MAR);
+       }
        break;
      case 6: // faro arcoiris
        tono = t++;
        TORRES_IGUALES = true;
        faro(tono);
+       if (USAR_SONIDO)
+      {
+        tocarSonido(MP3_SOUND_MAR);
+      }
+       break;
+     case 7: // magia
+       TORRES_IGUALES=false;
+       magia();
        break;
   }
   
@@ -198,4 +256,12 @@ if (botoncete.released())
 
 }
 
+void tocarSonido(byte nueva)
+{
+  if (melodia!=nueva)
+  {
+    mp3.play(nueva);
+    melodia=nueva;
+  }
+}
 

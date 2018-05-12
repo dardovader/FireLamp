@@ -41,8 +41,9 @@ void faro(byte tono)
           break;  
      }
   }
-  static byte v=map(CENTELLEO,0,255,1,4);
-  b=b+v;
+  //static byte v=map(CENTELLEO,0,255,1,4);
+  //b=b+v;
+  b++;
   if (b>=255)
   {
     b=0;
@@ -64,4 +65,5 @@ void difuminarTorres()
     ledsTorre_4[i].nscale8(250);
   }
 }
+
 
