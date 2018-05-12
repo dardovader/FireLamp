@@ -78,7 +78,7 @@ byte CENTELLEO = 200;
 byte ENFRIAMIENTO = 55;
 byte modo = 0;
 
-#define  num_modos 9
+#define  num_modos 11
 
 bool gReverseDirection = false;
 
@@ -235,6 +235,16 @@ if (botoncete.released())
        TORRES_IGUALES=true;
        tono=CENTELLEO;
        larson(tono);
+       break;
+     case 9: // larson multicolor
+       TORRES_IGUALES=true;
+       tono++;
+       larson(tono);
+       break;
+     case 10: // larson con desfase de color
+       TORRES_IGUALES=false;
+       tono++;
+       larsonDesfasdo(tono);
        break;
   }
 

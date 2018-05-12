@@ -201,3 +201,40 @@ void larson(byte t)
  }
 }
 
+
+void larsonDesfasdo(byte t)
+{
+  difuminarTorres(ENFRIAMIENTO);
+
+  static byte i=0;
+  static boolean subida = true;
+    ledsTorre_1[i]=CHSV(t,255,255);
+    ledsTorre_2[i]=CHSV(t+64,255,255);
+    ledsTorre_3[i]=CHSV(t+128,255,255);
+    ledsTorre_4[i]=CHSV(t+196,255,255);
+
+ if (subida)
+ {
+  if (i<NUM_LEDS_TORRE-1)
+  {
+    i++;
+  }
+  else
+  {
+    subida=false;
+    i--;
+  }
+ }
+ else
+ {
+  if (i>0)
+  {
+    i--;
+  }
+  else
+  {
+    subida=true;
+    i++;
+  }
+ }
+}
