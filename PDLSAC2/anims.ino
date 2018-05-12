@@ -143,23 +143,24 @@ void pintarTorres()
 
 void magia()
 {
-  for (byte i=0; i<NUM_LEDS_TORRE; i++)
+/*  for (byte i=0; i<NUM_LEDS_TORRE; i++)
   {
     ledsTorre_1[i]=qsub8(ledsTorre_1[i],random8(0,ENFRIAMIENTO));
     ledsTorre_2[i]=qsub8(ledsTorre_2[i],random8(0,ENFRIAMIENTO));
     ledsTorre_3[i]=qsub8(ledsTorre_3[i],random8(0,ENFRIAMIENTO));
     ledsTorre_4[i]=qsub8(ledsTorre_4[i],random8(0,ENFRIAMIENTO));
   }
-
+*/
+  difuminarTorres(ENFRIAMIENTO);
   if (random8() <CENTELLEO)
   {
     byte n= random8(0,4);
     switch(n)
     {
-      case 0: ledsTorre_1[random8(0,NUM_LEDS_TORRE-1)]=CHSV(random8(),255,255); break;
-      case 1: ledsTorre_2[random8(0,NUM_LEDS_TORRE-1)]=CHSV(random8(),255,255); break;
-      case 2: ledsTorre_3[random8(0,NUM_LEDS_TORRE-1)]=CHSV(random8(),255,255); break;
-      case 3: ledsTorre_4[random8(0,NUM_LEDS_TORRE-1)]=CHSV(random8(),255,255); break;
+      case 0: ledsTorre_1[random8(0,NUM_LEDS_TORRE)]=CHSV(random8(),255,255); break;
+      case 1: ledsTorre_2[random8(0,NUM_LEDS_TORRE)]=CHSV(random8(),255,255); break;
+      case 2: ledsTorre_3[random8(0,NUM_LEDS_TORRE)]=CHSV(random8(),255,255); break;
+      case 3: ledsTorre_4[random8(0,NUM_LEDS_TORRE)]=CHSV(random8(),255,255); break;
     }
   }
 }

@@ -54,7 +54,7 @@ DFRobotDFPlayerMini mp3;
 #define MEM_ADDRESS 0
 
 byte brillo = 64;
-#define FRAMES_PER_SECOND 100
+#define FRAMES_PER_SECOND 60
 
 #define DHT_REFRESH 300000 
 
@@ -210,6 +210,7 @@ if (botoncete.released())
         }
         break;
      case 5: //faro
+       apagarAros();
        tono = CENTELLEO;
        TORRES_IGUALES = true;
        faro(tono);
@@ -219,6 +220,7 @@ if (botoncete.released())
        }
        break;
      case 6: // faro arcoiris
+       apagarAros();
        tono = t++;
        TORRES_IGUALES = true;
        faro(tono);
@@ -228,20 +230,24 @@ if (botoncete.released())
       }
        break;
      case 7: // magia
+       apagarAros();
        TORRES_IGUALES=false;
        magia();
        break;
      case 8: // larson
+       apagarAros();
        TORRES_IGUALES=true;
        tono=CENTELLEO;
        larson(tono);
        break;
      case 9: // larson multicolor
+       apagarAros();
        TORRES_IGUALES=true;
        tono++;
        larson(tono);
        break;
      case 10: // larson con desfase de color
+       apagarAros();
        TORRES_IGUALES=false;
        tono++;
        larsonDesfasdo(tono);
