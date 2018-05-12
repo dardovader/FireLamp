@@ -78,7 +78,7 @@ byte CENTELLEO = 200;
 byte ENFRIAMIENTO = 55;
 byte modo = 0;
 
-#define  num_modos 8
+#define  num_modos 9
 
 bool gReverseDirection = false;
 
@@ -210,7 +210,7 @@ if (botoncete.released())
         }
         break;
      case 5: //faro
-       tono = 127;
+       tono = CENTELLEO;
        TORRES_IGUALES = true;
        faro(tono);
        if (USAR_SONIDO)
@@ -231,7 +231,14 @@ if (botoncete.released())
        TORRES_IGUALES=false;
        magia();
        break;
+     case 8: // larson
+       TORRES_IGUALES=true;
+       tono=CENTELLEO;
+       larson(tono);
+       break;
   }
+
+ 
   
   if (USE_TEMP_SENSOR)
   {

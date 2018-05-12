@@ -153,7 +153,7 @@ void magia()
 
   if (random8() <CENTELLEO)
   {
-    byte n= random8(0,3);
+    byte n= random8(0,4);
     switch(n)
     {
       case 0: ledsTorre_1[random8(0,NUM_LEDS_TORRE-1)]=CHSV(random8(),255,255); break;
@@ -162,5 +162,42 @@ void magia()
       case 3: ledsTorre_4[random8(0,NUM_LEDS_TORRE-1)]=CHSV(random8(),255,255); break;
     }
   }
+}
+
+void larson(byte t)
+{
+  difuminarTorres(ENFRIAMIENTO);
+
+  static byte i=0;
+  static boolean subida = true;
+    ledsTorre_1[i]=CHSV(t,255,255);
+    ledsTorre_2[i]=CHSV(t,255,255);
+    ledsTorre_3[i]=CHSV(t,255,255);
+    ledsTorre_4[i]=CHSV(t,255,255);
+
+ if (subida)
+ {
+  if (i<NUM_LEDS_TORRE-1)
+  {
+    i++;
+  }
+  else
+  {
+    subida=false;
+    i--;
+  }
+ }
+ else
+ {
+  if (i>0)
+  {
+    i--;
+  }
+  else
+  {
+    subida=true;
+    i++;
+  }
+ }
 }
 

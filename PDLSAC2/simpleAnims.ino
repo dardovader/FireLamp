@@ -55,14 +55,14 @@ void faro(byte tono)
   } 
 }
 
-void difuminarTorres()
+void difuminarTorres(byte n)
 {
   for (byte i=0; i<NUM_LEDS_TORRE;i++)
   {
-    ledsTorre_1[i].nscale8(250);
-    ledsTorre_2[i].nscale8(250);
-    ledsTorre_3[i].nscale8(250);
-    ledsTorre_4[i].nscale8(250);
+    ledsTorre_1[i].nscale8(n);
+    ledsTorre_2[i].nscale8(n);
+    ledsTorre_3[i].nscale8(n);
+    ledsTorre_4[i].nscale8(n);
   }
 }
 
